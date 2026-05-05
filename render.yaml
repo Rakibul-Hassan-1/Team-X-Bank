@@ -4,20 +4,10 @@ services:
     env: python
     plan: free
     buildCommand: "pip install -r requirements.txt"
-    startCommand: "gunicorn mamar_bank.wsgi --log-file -"
+    startCommand: "gunicorn mamar_bank.wsgi:application --bind 0.0.0.0:$PORT --log-file -"
     envVars:
       - key: DJANGO_SETTINGS_MODULE
         value: mamar_bank.settings
-      - key: SECRET_KEY
-        # set this in Render dashboard
-        value: ""
-      - key: DATABASE_URL
-        # optionally set to a Postgres DB URL
-        value: ""
-      - key: EMAIL
-        value: ""
-      - key: EMAIL_PASSWORD
-        value: ""
-    postDeploy: "bash ./scripts/render_postdeploy.sh"
+    preDeployCommand: "python manage.py migrate --noinput && python manage.py collectstatic --noinput"
     autoDeploy: true
     pullRequestPreviews: false

@@ -7,7 +7,7 @@ environ.Env.read_env()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Your secret key
-SECRET_KEY = env("SECRET_KEY")
+SECRET_KEY = env("SECRET_KEY", default="django-insecure-team-x-bank-dev-only-change-me")
 # Quick-start deployment settings
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -94,8 +94,8 @@ WSGI_APPLICATION = 'mamar_bank.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        # Feel free to alter this value to suit your needs.
-        default='postgresql://mamar_bank_7kji_user:XCKg7dUgVnVUiJCc1uvO81d5ClirRtws@dpg-crj77hij1k6c73fk13sg-a.oregon-postgres.render.com/mamar_bank_7kji',
+        default=f'sqlite:///{BASE_DIR / "db.sqlite3"}',
+        conn_max_age=600,
     )
 }
 
@@ -147,5 +147,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = env("EMAIL")
-EMAIL_HOST_PASSWORD = env("EMAIL_PASSWORD")
+EMAIL_HOST_USER = env("EMAIL", default="")
+EMAIL_HOST_PASSWORD = env("EMAIL_PASSWORD", default="")
