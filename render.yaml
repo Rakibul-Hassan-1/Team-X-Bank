@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: team-x-bank
+    env: python
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn mamar_bank.wsgi --log-file -"
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: mamar_bank.settings
+      - key: SECRET_KEY
+        # set this in Render dashboard
+        value: ""
+      - key: DATABASE_URL
+        # optionally set to a Postgres DB URL
+        value: ""
+      - key: EMAIL
+        value: ""
+      - key: EMAIL_PASSWORD
+        value: ""
+    postDeploy: "bash ./scripts/render_postdeploy.sh"
+    autoDeploy: true
+    pullRequestPreviews: false
